@@ -1,4 +1,4 @@
-FROM ruby:2.6-slim-stretch
+FROM ruby:2.6-slim-buster
 
 LABEL maintainer="https://github.com/yukimochi/mastodon-assets-precompiler"
 
@@ -8,12 +8,12 @@ WORKDIR /mastodon
 
 RUN apt-get update \
     && apt-get -y install --no-install-recommends curl gnupg2 \
-    && curl -sL https://deb.nodesource.com/setup_8.x | bash - \
+    && curl -sL https://deb.nodesource.com/setup_10.x | bash - \
     && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
     && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
     && apt-get update \
     && apt-get -y install --no-install-recommends build-essential git libicu-dev libidn11-dev libtool libpq-dev libprotobuf-dev python \
-    && apt-get -y install --no-install-recommends ca-certificates ffmpeg file libicu57 imagemagick libidn11 libpq5 libprotobuf10 openssl protobuf-compiler tzdata wget nodejs yarn cmake \
+    && apt-get -y install --no-install-recommends ca-certificates ffmpeg file libicu63 imagemagick libidn11 libpq5 libprotobuf17 openssl protobuf-compiler tzdata wget nodejs yarn cmake \
     && apt-get -y autoremove --purge \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
@@ -32,7 +32,7 @@ RUN cd ~ \
 RUN wget https://dl.minio.io/client/mc/release/linux-amd64/mc -O /usr/local/bin/mc \
     && chmod +x /usr/local/bin/mc
 
-RUN git clone -b v2.8.0 https://github.com/tootsuite/mastodon.git .
+RUN git clone -b v2.9.2 https://github.com/tootsuite/mastodon.git .
 
 RUN bundle install --deployment --without test development \
     && yarn --pure-lockfile \
